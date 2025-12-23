@@ -134,10 +134,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For PythonAnywhere
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-    # os.path.join(BASE_DIR, 'static'),
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+#     # os.path.join(BASE_DIR, 'static'),
+# ]
 
 # WhiteNoise configuration for efficient static file serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
