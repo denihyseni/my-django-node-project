@@ -1,0 +1,33 @@
+# Django Core
+Django==5.2.9
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+
+# JWT Authentication
+djangorestframework-simplejwt==5.3.2
+PyJWT==2.8.1
+
+# Database (SQLite is included with Django, but for production use PostgreSQL)
+# psycopg2-binary==2.9.9  # Uncomment for PostgreSQL in production
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Security & Utilities
+django-environ==0.21.0
+
+# Development Dependencies (optional, for local development)
+# Uncomment the following for development:
+# black==23.12.0  # Code formatter
+# flake8==6.1.0  # Linting
+# django-debug-toolbar==4.2.0  # Debug toolbar
+# factory-boy==3.3.0  # Testing factories
+# pytest==7.4.3  # Testing framework
+# pytest-django==4.7.0  # Django testing plugin
+
+# WSGI/ASGI Servers
+gunicorn==21.2.0
+# daphne==4.0.0  # Uncomment if using async (ASGI)
+
+# Production-recommended additions
+whitenoise==6.6.0  # Serve static files efficiently

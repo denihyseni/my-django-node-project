@@ -1,0 +1,334 @@
+.login-container-secure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    max-width: 450px;
+    width: 100%;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-card h1 {
+    color: #333;
+    margin: 0 0 5px 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.login-card .subtitle {
+    color: #666;
+    margin: 0 0 30px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Error Message */
+.error-message {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    animation: shake 0.5s ease-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Form Styling */
+form {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.login-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.login-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Credentials Section */
+.credentials-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.credentials-section h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.credentials-section .note {
+    margin: 0 0 15px 0;
+    color: #666;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.credential-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.credential-item {
+    background: white;
+    border-left: 4px solid #667eea;
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.credential-item.admin {
+    border-left-color: #dc3545;
+}
+
+.credential-item.professor {
+    border-left-color: #ffc107;
+}
+
+.credential-item.student {
+    border-left-color: #28a745;
+}
+
+.credential-item strong {
+    color: #333;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.credential-item code {
+    background: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: #666;
+    flex: 1;
+    margin-right: 8px;
+}
+
+.credential-item .badge {
+    background: #667eea;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Security Features */
+.security-features {
+    background: #e8f4f8;
+    border-left: 4px solid #17a2b8;
+    padding: 16px;
+    border-radius: 6px;
+}
+
+.security-features h4 {
+    margin: 0 0 12px 0;
+    color: #0c5460;
+    font-size: 14px;
+}
+
+.security-features ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.security-features li {
+    color: #0c5460;
+    padding: 4px 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 20px;
+    }
+
+    .login-card h1 {
+        font-size: 24px;
+    }
+
+    .credential-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .credential-item code {
+        width: 100%;
+        margin-bottom: 8px;
+        margin-right: 0;
+    }
+
+    .credential-item .badge {
+        align-self: flex-start;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .login-card,
+    .login-button,
+    .form-group input:focus {
+        animation: none;
+        transition: none;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .login-container-secure {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .login-card {
+        background: #0f3460;
+        color: #e0e0e0;
+    }
+
+    .login-card h1,
+    .form-group label {
+        color: #e0e0e0;
+    }
+
+    .form-group input {
+        background: #16213e;
+        border-color: #16213e;
+        color: #e0e0e0;
+    }
+
+    .form-group input:focus {
+        border-color: #667eea;
+    }
+
+    .credentials-section,
+    .credential-item {
+        background: #16213e;
+        color: #e0e0e0;
+    }
+
+    .credential-item code {
+        background: #0f3460;
+        color: #a0a0a0;
+    }
+
+    .security-features {
+        background: rgba(102, 126, 234, 0.2);
+        border-left-color: #667eea;
+    }
+
+    .security-features h4,
+    .security-features li {
+        color: #a0d4e0;
+    }
+}

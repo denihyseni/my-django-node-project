@@ -1,0 +1,82 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Compiled Python files
+*.egg-info/
+dist/
+build/
+
+# Database
+db.sqlite3
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# Node and Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+frontend/build/
+frontend/dist/
+
+# Testing and Coverage
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# Django
+*.log
+local_settings.py
+/staticfiles/
+/media/
+
+# Byte-compiled / optimized / DLL files
+*.o
+
+# IDEs
+.vscode
+.idea
+
+# OS
+.DS_Store
+.gitkeep
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# Project specific
+.env.production
+secrets.json
