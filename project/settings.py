@@ -135,7 +135,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For PythonAnywhere
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / "static"
+    # os.path.join(BASE_DIR, 'static'),
 ]
 
 # WhiteNoise configuration for efficient static file serving
