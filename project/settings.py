@@ -27,7 +27,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gkt_mbslzcjf+vno5r%yd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS =[
+    'YOUR_USERNAME.pythonanywhere.com',
+] 
+#os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Security Settings (to prevent common attacks)
 SECURE_BROWSER_XSS_FILTER = True
