@@ -3,7 +3,6 @@ import axios from 'axios'
 
 export default function ProfessorDashboard() {
   const [data, setData] = useState(null)
-  const [courses, setCourses] = useState([])
   const [enrollments, setEnrollments] = useState([])
   const [activeTab, setActiveTab] = useState('courses')
   const [loading, setLoading] = useState(false)
@@ -12,24 +11,31 @@ export default function ProfessorDashboard() {
 
   const token = localStorage.getItem('access')
 
+  // ✅ ADD: API base (Vercel → PythonAnywhere)
+  const API_BASE =
+    process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'
+
   useEffect(() => {
     loadDashboardData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loadDashboardData = async () => {
     setLoading(true)
     try {
-      const dashRes = await axios.get('/api/university/dashboard/', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const dashRes = await axios.get(
+        `${API_BASE}/api/university/dashboard/`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
       setData(dashRes.data)
 
-      // Load enrollments for this professor's courses
-      const enrollRes = await axios.get('/api/university/enrollments/', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      const allEnrollments = enrollRes.data.results || enrollRes.data
-      setEnrollments(allEnrollments)
+      const enrollRes = await axios.get(
+        `${API_BASE}/api/university/enrollments/`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      const list = enrollRes.data?.results || enrollRes.data || []
+      setEnrollments(Array.isArray(list) ? list : [])
     } catch (err) {
       console.error('Load error:', err)
     } finally {
@@ -39,11 +45,11 @@ export default function ProfessorDashboard() {
 
   const handleGradeChange = async (enrollmentId, newGrade) => {
     try {
-      await axios.patch(`/api/university/enrollments/${enrollmentId}/`, {
-        grade: newGrade
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await axios.patch(
+        `${API_BASE}/api/university/enrollments/${enrollmentId}/`,
+        { grade: newGrade },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
       alert('Grade updated successfully')
       setEditingEnrollmentId(null)
       loadDashboardData()
@@ -53,20 +59,32 @@ export default function ProfessorDashboard() {
     }
   }
 
-  if (loading) return <div className="admin-dashboard"><p>Loading...</p></div>
+  if (loading) {
+    return (
+      <div className="admin-dashboard">
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
   const coursesList = data?.courses || []
 
   return (
     <div className="admin-dashboard">
       <h1>Professor Dashboard</h1>
-      <p className="subtitle">Welcome, {data?.username}!</p>
+      <p className="subtitle">Welcome, {data?.username || 'Professor'}!</p>
 
       <div className="dashboard-nav">
-        <button className={`nav-btn ${activeTab === 'courses' ? 'active' : ''}`} onClick={() => setActiveTab('courses')}>
+        <button
+          className={`nav-btn ${activeTab === 'courses' ? 'active' : ''}`}
+          onClick={() => setActiveTab('courses')}
+        >
           My Courses ({coursesList.length})
         </button>
-        <button className={`nav-btn ${activeTab === 'grades' ? 'active' : ''}`} onClick={() => setActiveTab('grades')}>
+        <button
+          className={`nav-btn ${activeTab === 'grades' ? 'active' : ''}`}
+          onClick={() => setActiveTab('grades')}
+        >
           Student Grades
         </button>
       </div>
@@ -102,7 +120,7 @@ export default function ProfessorDashboard() {
                   <tr>
                     <th>Student</th>
                     <th>Course</th>
-                    <th>Current Grade</th>
+                    <th>Grade</th>
                     <th>Score</th>
                     <th>Action</th>
                   </tr>
@@ -114,30 +132,50 @@ export default function ProfessorDashboard() {
                       <td>{enrollment.subject_name}</td>
                       <td>
                         {editingEnrollmentId === enrollment.id ? (
-                          <select value={grade} onChange={(e) => setGrade(e.target.value)}>
+                          <select
+                            value={grade}
+                            onChange={e => setGrade(e.target.value)}
+                          >
                             <option value="">Not Graded</option>
-                            <option value="A">A (90-100)</option>
-                            <option value="B">B (80-89)</option>
-                            <option value="C">C (70-79)</option>
-                            <option value="D">D (60-69)</option>
+                            <option value="A">A (90–100)</option>
+                            <option value="B">B (80–89)</option>
+                            <option value="C">C (70–79)</option>
+                            <option value="D">D (60–69)</option>
                             <option value="F">F (Below 60)</option>
                           </select>
                         ) : (
                           enrollment.grade || 'Not Graded'
                         )}
                       </td>
-                      <td>{enrollment.score || '-'}</td>
+                      <td>{enrollment.score ?? '-'}</td>
                       <td>
                         {editingEnrollmentId === enrollment.id ? (
                           <>
-                            <button className="btn-small" onClick={() => handleGradeChange(enrollment.id, grade)}>Save</button>
-                            <button className="btn-small" onClick={() => setEditingEnrollmentId(null)}>Cancel</button>
+                            <button
+                              className="btn-small"
+                              onClick={() =>
+                                handleGradeChange(enrollment.id, grade)
+                              }
+                            >
+                              Save
+                            </button>
+                            <button
+                              className="btn-small"
+                              onClick={() => setEditingEnrollmentId(null)}
+                            >
+                              Cancel
+                            </button>
                           </>
                         ) : (
-                          <button className="btn-small" onClick={() => {
-                            setEditingEnrollmentId(enrollment.id)
-                            setGrade(enrollment.grade || '')
-                          }}>Edit</button>
+                          <button
+                            className="btn-small"
+                            onClick={() => {
+                              setEditingEnrollmentId(enrollment.id)
+                              setGrade(enrollment.grade || '')
+                            }}
+                          >
+                            Edit
+                          </button>
                         )}
                       </td>
                     </tr>

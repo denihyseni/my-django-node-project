@@ -18,19 +18,16 @@ export default function StudentDashboard() {
   const loadDashboardData = async () => {
     setLoading(true)
     try {
-      // Load student dashboard data
       const dashRes = await axios.get('/api/university/dashboard/', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setData(dashRes.data)
       setEnrollments(dashRes.data.enrollments || [])
 
-      // Load all available courses
       const coursesRes = await axios.get('/api/university/subjects/', {
         headers: { Authorization: `Bearer ${token}` }
       })
-      const allCourses = coursesRes.data.results || coursesRes.data
-      setAvailableCourses(allCourses)
+      setAvailableCourses(coursesRes.data.results || coursesRes.data)
     } catch (err) {
       console.error('Load error:', err)
     } finally {
@@ -41,47 +38,47 @@ export default function StudentDashboard() {
   const handleEnroll = async (subjectId) => {
     setEnrollingId(subjectId)
     try {
-      const student = data?.student_id || 1 // Will be fetched properly
-      
-      // First get the student ID
       const studRes = await axios.get('/api/university/students/', {
         headers: { Authorization: `Bearer ${token}` }
       })
       const students = studRes.data.results || studRes.data
-      const currentStudent = students.find(s => s.user.username === data?.username)
+      const currentStudent = students.find(
+        s => s.user.username === data?.username
+      )
 
       if (!currentStudent) {
-        alert('Could not find student profile')
-        setEnrollingId(null)
+        alert('Student profile not found')
         return
       }
 
-      await axios.post('/api/university/enrollments/', {
-        student: currentStudent.id,
-        subject: subjectId,
-        grade: '',
-        score: null
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await axios.post(
+        '/api/university/enrollments/',
+        {
+          student: currentStudent.id,
+          subject: subjectId
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
 
-      alert('Successfully enrolled in course!')
+      alert('Successfully enrolled!')
       loadDashboardData()
     } catch (err) {
       console.error('Enrollment error:', err)
-      if (err.response?.data?.non_field_errors?.[0]?.includes('unique')) {
-        alert('You are already enrolled in this course')
-      } else {
-        alert('Failed to enroll in course')
-      }
+      alert(
+        err.response?.data?.detail ||
+        'Failed to enroll in course'
+      )
     } finally {
       setEnrollingId(null)
     }
   }
 
-  if (loading) return <div className="admin-dashboard"><p>Loading...</p></div>
+  if (loading)
+    return <div className="admin-dashboard"><p>Loading...</p></div>
 
-  const enrolledCourseIds = enrollments.map(e => e.id) // Note: will need to adjust based on actual enrollment structure
+  const enrolledSubjectIds = enrollments.map(e => e.subject?.id)
 
   return (
     <div className="admin-dashboard">
@@ -89,10 +86,16 @@ export default function StudentDashboard() {
       <p className="subtitle">Welcome, {data?.username}!</p>
 
       <div className="dashboard-nav">
-        <button className={`nav-btn ${activeTab === 'enrolled' ? 'active' : ''}`} onClick={() => setActiveTab('enrolled')}>
+        <button
+          className={`nav-btn ${activeTab === 'enrolled' ? 'active' : ''}`}
+          onClick={() => setActiveTab('enrolled')}
+        >
           My Enrollments ({enrollments.length})
         </button>
-        <button className={`nav-btn ${activeTab === 'available' ? 'active' : ''}`} onClick={() => setActiveTab('available')}>
+        <button
+          className={`nav-btn ${activeTab === 'available' ? 'active' : ''}`}
+          onClick={() => setActiveTab('available')}
+        >
           Available Courses
         </button>
       </div>
@@ -101,23 +104,27 @@ export default function StudentDashboard() {
         <div>
           <h3>Your Enrolled Courses</h3>
           {enrollments.length === 0 ? (
-            <p className="muted">You are not enrolled in any courses yet.</p>
+            <p className="muted">You are not enrolled in any courses.</p>
           ) : (
             <div className="cards-grid">
-              {enrollments.map(enrollment => (
-                <div key={enrollment.id} className="course-card">
-                  <h4>{enrollment.subject}</h4>
-                  <p><strong>Professor:</strong> {enrollment.professor}</p>
+              {enrollments.map(e => (
+                <div key={e.id} className="course-card">
+                  <h4>{e.subject?.name}</h4>
                   <p>
-                    <strong>Grade:</strong> <span style={{
-                      fontSize: '18px',
-                      fontWeight: 'bold',
-                      color: enrollment.grade === 'A' ? '#4caf50' : enrollment.grade === 'F' ? '#f44336' : '#ff9800'
-                    }}>
-                      {enrollment.grade}
+                    <strong>Professor:</strong>{' '}
+                    {e.subject?.professor
+                      ? e.subject.professor.user.username
+                      : 'TBD'}
+                  </p>
+                  <p>
+                    <strong>Grade:</strong>{' '}
+                    <span style={{ fontWeight: 'bold' }}>
+                      {e.grade || 'Not graded'}
                     </span>
                   </p>
-                  {enrollment.score && <p><strong>Score:</strong> {enrollment.score}/100</p>}
+                  {e.score !== null && (
+                    <p><strong>Score:</strong> {e.score}/100</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -127,33 +134,36 @@ export default function StudentDashboard() {
 
       {activeTab === 'available' && (
         <div>
-          <h3>Available Courses for Enrollment</h3>
-          {availableCourses.length === 0 ? (
-            <p className="muted">No courses available.</p>
-          ) : (
-            <div className="cards-grid">
-              {availableCourses.map(course => {
-                const isEnrolled = enrollments.some(e => e.subject === course.name)
-                return (
-                  <div key={course.id} className="course-card">
-                    <h4>{course.name}</h4>
-                    <p className="muted">{course.description}</p>
-                    <p><strong>Faculty:</strong> ID {course.faculty}</p>
-                    <p><strong>Credits:</strong> {course.credits}</p>
-                    <p><strong>Professor:</strong> {course.professor ? course.professor.user.username : 'TBD'}</p>
-                    <button
-                      className={`btn ${isEnrolled ? 'disabled' : ''}`}
-                      onClick={() => handleEnroll(course.id)}
-                      disabled={isEnrolled || enrollingId === course.id}
-                      style={{ cursor: isEnrolled ? 'not-allowed' : 'pointer' }}
-                    >
-                      {enrollingId === course.id ? 'Enrolling...' : isEnrolled ? 'Already Enrolled' : 'Enroll Now'}
-                    </button>
-                  </div>
-                )
-              })}
-            </div>
-          )}
+          <h3>Available Courses</h3>
+          <div className="cards-grid">
+            {availableCourses.map(course => {
+              const isEnrolled = enrolledSubjectIds.includes(course.id)
+              return (
+                <div key={course.id} className="course-card">
+                  <h4>{course.name}</h4>
+                  <p className="muted">{course.description}</p>
+                  <p><strong>Credits:</strong> {course.credits}</p>
+                  <p>
+                    <strong>Professor:</strong>{' '}
+                    {course.professor
+                      ? course.professor.user.username
+                      : 'TBD'}
+                  </p>
+                  <button
+                    className="btn"
+                    disabled={isEnrolled || enrollingId === course.id}
+                    onClick={() => handleEnroll(course.id)}
+                  >
+                    {enrollingId === course.id
+                      ? 'Enrolling...'
+                      : isEnrolled
+                        ? 'Already Enrolled'
+                        : 'Enroll'}
+                  </button>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
     </div>
