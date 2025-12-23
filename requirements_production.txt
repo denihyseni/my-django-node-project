@@ -1,127 +1,30 @@
 # ============================================================================
 # UNIVERSITY PORTAL - PRODUCTION REQUIREMENTS
-# Python 3.10.12 compatible
+# Python 3.10 compatible
 # PythonAnywhere optimized
 # ============================================================================
 
-# ============================================================================
-# DJANGO CORE & FRAMEWORK
-# ============================================================================
-
-# Django web framework (4.2 LTS - supports Python 3.10+)
+# ===================== DJANGO CORE =====================
 Django==4.2.7
-
-# Django REST Framework for API
 djangorestframework==3.14.0
-
-# CORS headers support
 django-cors-headers==4.3.1
 
-# ============================================================================
-# AUTHENTICATION & SECURITY
-# ============================================================================
+# ===================== AUTH & SECURITY =================
+djangorestframework-simplejwt==5.3.1
+PyJWT==2.10.1
 
-# JWT token authentication
-djangorestframework-simplejwt==5.3.2
-
-# PyJWT library (used by SimpleJWT)
-PyJWT==2.8.1
-
-# Environment variables management
 python-dotenv==1.0.0
 django-environ==0.21.0
 
-# ============================================================================
-# DATABASE
-# ============================================================================
-
-# SQLite (included with Django - default for development)
-# For production, uncomment PostgreSQL below
-
-# PostgreSQL support (for PythonAnywhere production databases)
+# ===================== DATABASE ========================
 psycopg2-binary==2.9.9
 
-# Optional: MySQL support (alternative to PostgreSQL)
-# mysqlclient==2.2.0
-
-# ============================================================================
-# STATIC FILES & MEDIA
-# ============================================================================
-
-# WhiteNoise for efficient static file serving in production
+# ===================== STATIC FILES ====================
 whitenoise==6.6.0
-
-# Image processing (for handling image uploads)
 Pillow==10.0.1
 
-# ============================================================================
-# HTTP & NETWORKING
-# ============================================================================
-
-# HTTP requests library
+# ===================== HTTP ============================
 requests==2.31.0
 
-# ============================================================================
-# DEPLOYMENT & SERVERS
-# ============================================================================
-
-# Gunicorn WSGI application server (production web server)
+# ===================== SERVER ==========================
 gunicorn==21.2.0
-
-# ============================================================================
-# OPTIONAL: DEVELOPMENT DEPENDENCIES
-# ============================================================================
-
-# Uncomment for development environment:
-
-# Code quality and formatting
-# black==23.12.0              # Code formatter
-# flake8==6.1.0               # Linting
-# isort==5.13.2               # Import sorting
-
-# Testing frameworks
-# pytest==7.4.3               # Testing framework
-# pytest-django==4.7.0        # Django testing plugin
-# factory-boy==3.3.0          # Test data factories
-# faker==22.0.0               # Fake data generation
-
-# Development tools
-# django-debug-toolbar==4.2.0 # Debug toolbar
-# django-extensions==3.2.3    # Django extensions
-
-# ============================================================================
-# OPTIONAL: MONITORING & LOGGING
-# ============================================================================
-
-# Uncomment for production monitoring:
-
-# Sentry for error tracking
-# sentry-sdk==1.38.0
-
-# Data analytics
-# google-analytics-python-api==4.4.0
-
-# ============================================================================
-# OPTIONAL: ASYNC & REALTIME
-# ============================================================================
-
-# Uncomment for async support (ASGI):
-
-# Daphne ASGI server
-# daphne==4.0.0
-
-# Channels for WebSocket support
-# channels==4.0.0
-
-# ============================================================================
-# CACHING (Optional - for Redis cache instead of in-memory)
-# ============================================================================
-
-# Uncomment for Redis caching:
-
-# redis==5.0.1
-# django-redis==5.4.0
-
-# ============================================================================
-# NOTES
-# ============================================================================
