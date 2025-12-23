@@ -16,13 +16,13 @@ ALLOWED_HOSTS = [
     'www.denihyseni.pythonanywhere.com',
     'localhost',
     '127.0.0.1',
-    'my-django-node-project.vercel.app',
 ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
@@ -37,7 +37,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -92,7 +94,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ============================
-# ✅ REST FRAMEWORK (JWT ONLY)
+# ✅ REST FRAMEWORK (FIXED)
 # ============================
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -103,16 +105,20 @@ REST_FRAMEWORK = {
     ),
 }
 
+
 # ============================
-# ✅ SIMPLE JWT
+# ✅ SIMPLE JWT (VALID SIGNATURE)
 # ============================
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
+
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
+
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
 }
@@ -127,7 +133,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
 ]
+
 CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
@@ -135,11 +143,12 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # ============================
-# ✅ CSRF (JWT doesn’t need cookies)
+# ✅ CSRF (FIXED)
 # ============================
 CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = 'Lax'
+
 CSRF_TRUSTED_ORIGINS = [
     'https://denihyseni.pythonanywhere.com',
     'https://www.denihyseni.pythonanywhere.com',
@@ -147,11 +156,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # ============================
-# ✅ SESSION (disabled for API)
+# ✅ SESSION (SAFE DEFAULTS)
 # ============================
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 15 * 60
-SESSION_COOKIE_HTTPONLY = False   # disable httpOnly so frontend won’t get stuck
+SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SAMESITE = 'Lax'
 
@@ -167,4 +176,4 @@ CACHES = {
 
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
+SECURE_BROWSER_XSS_FILTER = True                                            
