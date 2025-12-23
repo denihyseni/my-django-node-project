@@ -29,6 +29,7 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS =[
     'denihyseni.pythonanywhere.com',
+    'www.denihyseni.pythonanywhere.com',
 ] 
 #os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -209,7 +210,7 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # ===== SECURITY HEADERS =====
-CSRF_COOKIE_SECURE = not DEBUG  # HTTPS in production
+CSRF_COOKIE_SECURE = True  # HTTPS in production
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Strict'
 
@@ -231,24 +232,24 @@ SECURE_CONTENT_SECURITY_POLICY = {
 }
 
 # ===== PRODUCTION SECURITY SETTINGS =====
-if not DEBUG:
-    # HTTPS/SSL Settings
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+# if not DEBUG:
+#     # HTTPS/SSL Settings
+#     SECURE_SSL_REDIRECT = True
+#     SESSION_COOKIE_SECURE = True
+#     CSRF_COOKIE_SECURE = True
     
-    # HSTS (HTTP Strict Transport Security)
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+#     # HSTS (HTTP Strict Transport Security)
+#     SECURE_HSTS_SECONDS = 31536000  # 1 year
+#     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#     SECURE_HSTS_PRELOAD = True
     
-    # Allowed hosts for production
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
-else:
-    # Development settings
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
+#     # Allowed hosts for production
+#     ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+# else:
+#     # Development settings
+#     SECURE_SSL_REDIRECT = False
+#     SESSION_COOKIE_SECURE = False
+#     CSRF_COOKIE_SECURE = False
 # CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:3001,http://127.0.0.1:3001').split(',')
 
 # Production CSRF (example - update with your domains)
