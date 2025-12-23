@@ -187,20 +187,20 @@ SIMPLE_JWT = {
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 15 * 60  # 15 minutes
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = not DEBUG  # HTTPS in production
-SESSION_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SECURE = True  # HTTPS in production
+SESSION_COOKIE_SAMESITE = 'None'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Clear session when browser closes
 SESSION_SAVE_EVERY_REQUEST = True  # Update expiry on every request
 
 # Restrict CORS to the front-end origin (change as needed)
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001').split(',')
+# CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001').split(',')
 
 # Production CORS (example - update with your domains)
-# CORS_ALLOWED_ORIGINS = [
-#     'https://yourdomain.com',
-#     'https://www.yourdomain.com',
-#     'https://yourfrontend.netlify.app',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'https://denihyseni.pythonanywhere.com',
+    'https://www.denihyseni.pythonanywhere.com',
+    'https://my-django-node-project.vercel.app',
+]
 
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies
 CORS_ALLOW_HEADERS = [
@@ -256,6 +256,7 @@ SECURE_CONTENT_SECURITY_POLICY = {
 CSRF_TRUSTED_ORIGINS = [
             'https://denihyseni.pythonanywhere.com',
             'https://www.denihyseni.pythonanywhere.com',
+            "https://my-django-node-project.vercel.app"
             ]
 
 
