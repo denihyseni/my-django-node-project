@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gkt_mbslzcjf+vno5r%ydokpuc_8s1o$iz3+utbu+kl+qaex+q'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gkt_mbslzcjf+vno5r%ydokpuc_8s1o$iz3+utbu+kl+qaex+q')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Security Settings (to prevent common attacks)
 SECURE_BROWSER_XSS_FILTER = True
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files serving
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,7 +129,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For PythonAnywhere
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# WhiteNoise configuration for efficient static file serving
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -176,17 +188,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Clear session when browser closes
 SESSION_SAVE_EVERY_REQUEST = True  # Update expiry on every request
 
 # Restrict CORS to the front-end origin (change as needed)
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001',
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001').split(',')
 
-# Production CORS (uncomment for production)
+# Production CORS (example - update with your domains)
 # CORS_ALLOWED_ORIGINS = [
 #     'https://yourdomain.com',
 #     'https://www.yourdomain.com',
+#     'https://yourfrontend.netlify.app',
 # ]
 
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies
@@ -217,9 +225,32 @@ SECURE_CONTENT_SECURITY_POLICY = {
     'style-src': ("'self'", "'unsafe-inline'"),
     'img-src': ("'self'", "data:", "https:"),
 }
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3001',  # your frontend origin
-    'http://127.0.0.1:3001',
-]
+
+# ===== PRODUCTION SECURITY SETTINGS =====
+if not DEBUG:
+    # HTTPS/SSL Settings
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # HSTS (HTTP Strict Transport Security)
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+    # Allowed hosts for production
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+else:
+    # Development settings
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:3001,http://127.0.0.1:3001').split(',')
+
+# Production CSRF (example - update with your domains)
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://yourdomain.com',
+#     'https://www.yourdomain.com',
+# ]
 
 
