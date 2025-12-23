@@ -249,12 +249,12 @@ else:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:3001,http://127.0.0.1:3001').split(',')
+# CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:3001,http://127.0.0.1:3001').split(',')
 
 # Production CSRF (example - update with your domains)
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://yourdomain.com',
-#     'https://www.yourdomain.com',
-# ]
+CSRF_TRUSTED_ORIGINS = [
+            'https://denihyseni.pythonanywhere.com',
+            'https://www.denihyseni.pythonanywhere.com',
+            ]
 
 
