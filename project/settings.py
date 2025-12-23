@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gkt_mbslzcjf+vno5r%yd
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS =[
-    'YOUR_USERNAME.pythonanywhere.com',
+    'denihyseni.pythonanywhere.com',
 ] 
 #os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
